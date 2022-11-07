@@ -1,39 +1,38 @@
 const fs = require('fs');
-const path = require('path');
+const { stdin, stdout, stderr } = process;
 
-// const createFile = () => {
-//   fs.writeFile(
-//     path.join(__dirname, 'notes.txt'), ' ',
-//     (err) => {
-//       if (err) throw err;
-//       console.log('Файл был создан');
-//       writeToFile();
-//     }
-//   )
-// }
 
 const writeToFile = async () => {
   const output = fs.createWriteStream('02-write-file/notes.txt', 'utf8');
-  let questionOne = () => {
-    process.stdout.write('Как тебя зовут?\n');
-    process.stdin.on('data', data => {
-    output.write(data);
-    process.exit();
-  });
+
+  function question(question2) {
+      process.stdout.write('Ваша імя?\n');
+      process.stdin.on('data', data => {
+      output.write(data);
+      question2();
+      
+    });
   } 
+  function question2() {
+      
+      process.stdout.write('Ваша прозвішча?\n');
+      process.stdin.on('data', data => {
+      output.write(data);
+      process.exit();
+      });
+     
+    
+  } 
+ question(question2);
 
- questionOne();
-//  let questionTwo = () => {
-//   process.stdout.write('Как тебя зовут?\n');
-//   process.stdin.on('data', data => {
-//   output.write(data);
-//   process.exit();
-// });
-// } 
-
- 
-}
-
+}  
+process.on('exit', code => {
+  if (code === 0) {
+      stdout.write('Усё добранька');
+  } else {
+      stderr.write('ёсць пытаннечкі');
+  }
+});
 writeToFile()
 
 
